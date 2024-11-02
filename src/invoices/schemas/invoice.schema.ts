@@ -22,10 +22,10 @@ class BillTo {
   clientName: string;
 
   @Prop({ required: true })
-  streetAddress: string;
+  clientEmail: string;
 
   @Prop({ required: true })
-  clientEmail: string;
+  streetAddress: string;
 
   @Prop({ required: true })
   city: string;
@@ -35,6 +35,20 @@ class BillTo {
 
   @Prop({ required: true })
   country: string;
+}
+
+export type InvoiceDocument = Invoice & Document;
+
+@Schema()
+export class Invoice {
+  @Prop({ required: true })
+  invoiceNumber: string;
+
+  @Prop({ type: BillFrom, required: true })
+  billFrom: BillFrom;
+
+  @Prop({ type: BillTo, required: true })
+  billTo: BillTo;
 
   @Prop({ required: true })
   invoiceDate: string;
@@ -44,17 +58,6 @@ class BillTo {
 
   @Prop({ required: true })
   projectDescription: string;
-}
-
-export type InvoiceDocument = Invoice & Document;
-
-@Schema()
-export class Invoice {
-  @Prop({ type: BillFrom, required: true })
-  billFrom: BillFrom;
-
-  @Prop({ type: BillTo, required: true })
-  billTo: BillTo;
 
   @Prop({ required: true })
   status: string;

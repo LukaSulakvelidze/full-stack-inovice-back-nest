@@ -25,12 +25,12 @@ class BillTo {
   clientName: string;
 
   @IsNotEmpty()
-  @IsString()
-  streetAddress: string;
-
-  @IsNotEmpty()
   @IsEmail()
   clientEmail: string;
+
+  @IsNotEmpty()
+  @IsString()
+  streetAddress: string;
 
   @IsNotEmpty()
   @IsString()
@@ -43,18 +43,6 @@ class BillTo {
   @IsNotEmpty()
   @IsString()
   country: string;
-
-  @IsNotEmpty()
-  @IsString()
-  invoiceDate: string;
-
-  @IsNotEmpty()
-  @IsString()
-  paymentTerms: string;
-
-  @IsNotEmpty()
-  @IsString()
-  projectDescription: string;
 }
 
 export class CreateInvoiceDto {
@@ -67,4 +55,20 @@ export class CreateInvoiceDto {
   @Type(() => BillTo)
   @IsNotEmpty()
   billTo: BillTo;
+
+  @IsNotEmpty()
+  @IsString()
+  invoiceDate: string;
+
+  @IsNotEmpty()
+  @IsString()
+  paymentTerms: string;
+
+  @IsNotEmpty()
+  @IsString()
+  projectDescription: string;
+
+  @IsNotEmpty()
+  @IsString()
+  status: string;
 }

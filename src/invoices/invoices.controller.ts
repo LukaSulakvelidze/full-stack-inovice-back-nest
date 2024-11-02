@@ -32,15 +32,16 @@ export class InvoicesController {
     return this.InvoiceService.findAll(queryParams);
   }
 
-  @Get()
+  @Get(':id')
   @UseGuards(AuthGuard)
-  findOne(@Req() requsets) {
-    return this.InvoiceService.findOne(requsets.userId);
+  findOne(@Param('id') id: string) {
+    return this.InvoiceService.findOne(id);
   }
 
   @Patch(':id')
+  @UseGuards(AuthGuard)
   update(@Param('id') id: string, @Body() UpdateInvoiceDto: UpdateInvoiceDto) {
-    return this.InvoiceService.updateInvoice(+id, UpdateInvoiceDto);
+    return this.InvoiceService.updateInvoice(id, UpdateInvoiceDto);
   }
 
   @Delete(':id')

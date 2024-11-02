@@ -24,7 +24,8 @@ export class InvoicesService {
     const newInvoice = await this.invoiceModel.create({
       ...CreateInvoiceDto,
       userId,
-      status: 'Pending',
+      invoiceNumber:
+        '#' + (Math.random() + 1).toString(36).substring(6).toUpperCase(),
     });
     await this.userService.updateUserAndAddInvoice(userId, newInvoice._id);
     return newInvoice;
@@ -39,11 +40,13 @@ export class InvoicesService {
   }
 
   findOne(id: string) {
-    return this.invoiceModel.findById(id);
+    return this.invoiceModel.findById(id).select('-userId');
   }
 
-  updateInvoice(id: number, UpdateInvoiceDto: UpdateInvoiceDto) {
-    return `This action updates a #${id} expense`;
+  updateInvoice(id: string, UpdateInvoiceDto: UpdateInvoiceDto) {
+    return this.invoiceModel.findByIdAndUpdate(id, UpdateInvoiceDto, {
+      new: true,
+    });
   }
 
   async deleteInvoice(invoiceId: string, userId: string) {

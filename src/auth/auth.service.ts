@@ -1,4 +1,3 @@
-import { UpdateUserDto } from './../users/dto/update-user.dto';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { UsersService } from 'src/users/users.service';
@@ -13,7 +12,7 @@ export class AuthService {
   ) {}
 
   getCurrentUser(userId) {
-    return this.userService.findOne(userId);
+    return this.userService.findOne(userId).populate('invoices');
   }
 
   async SignUp(CreateUserDto: CreateUserDto) {
@@ -37,7 +36,7 @@ export class AuthService {
     const payload = {
       sub: user._id,
     };
-    const expire = rememberMe ? '7d' : '1h';
+    const expire = rememberMe ? '7d' : '1d';
     return {
       accesstoken: await this.jwtService.signAsync(payload, {
         expiresIn: expire,

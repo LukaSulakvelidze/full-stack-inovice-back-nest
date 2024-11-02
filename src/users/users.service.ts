@@ -24,14 +24,6 @@ export class UsersService {
     return this.userModel.create(createUserDto);
   }
 
-  // findAll(queryParams) {
-  //   const { page, take } = queryParams;
-  //   return this.userModel
-  //     .find()
-  //     .skip((page - 1) * take)
-  //     .limit(take);
-  // }
-
   findOne(id: string) {
     return this.userModel.findById(id);
   }

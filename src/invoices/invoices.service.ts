@@ -21,12 +21,19 @@ export class InvoicesService {
   ) {}
 
   async create(CreateInvoiceDto: CreateInvoiceDto, userId: string) {
+    const invoiceItems = CreateInvoiceDto.invoiceItems.map((item) => ({
+      ...item,
+      itemTotalPrice: item.itemPrice * item.itemQuantity,
+    }));
     const newInvoice = await this.invoiceModel.create({
       ...CreateInvoiceDto,
       userId,
+      invoiceItems,
       invoiceNumber:
         '#' + (Math.random() + 1).toString(36).substring(6).toUpperCase(),
     });
+    console.log(invoiceItems, 'InvoiceItems');
+    console.log(newInvoice, 'newInvoice');
     await this.userService.updateUserAndAddInvoice(userId, newInvoice._id);
     return newInvoice;
   }

@@ -1,4 +1,10 @@
-import { IsNotEmpty, IsString, ValidateNested, IsEmail } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsString,
+  ValidateNested,
+  IsEmail,
+  IsNumber,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 
 class BillFrom {
@@ -45,6 +51,20 @@ class BillTo {
   country: string;
 }
 
+class InvoiceItems {
+  @IsNotEmpty()
+  @IsString()
+  itemName: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  itemQuantity: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  itemPrice: number;
+}
+
 export class CreateInvoiceDto {
   @ValidateNested()
   @Type(() => BillFrom)
@@ -71,4 +91,9 @@ export class CreateInvoiceDto {
   @IsNotEmpty()
   @IsString()
   status: string;
+
+  @ValidateNested()
+  @Type(() => InvoiceItems)
+  @IsNotEmpty()
+  invoiceItems: InvoiceItems[];
 }

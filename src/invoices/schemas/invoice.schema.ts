@@ -37,6 +37,21 @@ class BillTo {
   country: string;
 }
 
+@Schema({ _id: false })
+class InvoiceItems {
+  @Prop({ required: true })
+  itemName: string;
+
+  @Prop({ required: true })
+  itemQuantity: number;
+
+  @Prop({ required: true })
+  itemPrice: number;
+
+  @Prop({ required: true })
+  itemTotalPrice: number;
+}
+
 export type InvoiceDocument = Invoice & Document;
 
 @Schema()
@@ -67,6 +82,9 @@ export class Invoice {
     ref: 'User',
   })
   userId: mongoose.Schema.Types.ObjectId;
+
+  @Prop({ type: mongoose.Schema.Types.Array, required: true })
+  invoiceItems: InvoiceItems[];
 }
 
 export const InvoiceSchema = SchemaFactory.createForClass(Invoice);

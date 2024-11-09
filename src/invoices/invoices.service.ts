@@ -32,8 +32,6 @@ export class InvoicesService {
       invoiceNumber:
         '#' + (Math.random() + 1).toString(36).substring(6).toUpperCase(),
     });
-    console.log(invoiceItems, 'InvoiceItems');
-    console.log(newInvoice, 'newInvoice');
     await this.userService.updateUserAndAddInvoice(userId, newInvoice._id);
     return newInvoice;
   }
@@ -51,9 +49,17 @@ export class InvoicesService {
   }
 
   updateInvoice(id: string, UpdateInvoiceDto: UpdateInvoiceDto) {
-    return this.invoiceModel.findByIdAndUpdate(id, UpdateInvoiceDto, {
-      new: true,
-    });
+    const invoiceItems = UpdateInvoiceDto.invoiceItems.map((item) => ({
+      ...item,
+      itemTotalPrice: item.itemPrice * item.itemQuantity,
+    }));
+    return this.invoiceModel.findByIdAndUpdate(
+      id,
+      { ...UpdateInvoiceDto, invoiceItems },
+      {
+        new: true,
+      },
+    );
   }
 
   async deleteInvoice(invoiceId: string, userId: string) {

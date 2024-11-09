@@ -23,7 +23,6 @@ export class InvoicesController {
   @Post()
   @UseGuards(AuthGuard)
   create(@Body() CreateInvoiceDto: CreateInvoiceDto, @Req() request) {
-    console.log(CreateInvoiceDto, 'Dto');
     return this.InvoiceService.create(CreateInvoiceDto, request.userId);
   }
 

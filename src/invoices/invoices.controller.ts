@@ -28,8 +28,11 @@ export class InvoicesController {
 
   @Get()
   @UseGuards(AuthGuard)
-  findAll(@Query() queryParams: paginationDto) {
-    return this.InvoiceService.findAll(queryParams);
+  findAll(
+    @Query() status: { filter_status: string },
+    @Query() queryParams: paginationDto,
+  ) {
+    return this.InvoiceService.findAll(status, queryParams);
   }
 
   @Get(':id')

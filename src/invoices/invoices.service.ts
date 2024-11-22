@@ -10,6 +10,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Invoice, InvoiceDocument } from './schemas/invoice.schema';
 import { Model } from 'mongoose';
 import { UsersService } from 'src/users/users.service';
+import { paginationDto } from 'src/users/dto/pagination.dto';
 
 @Injectable()
 export class InvoicesService {
@@ -36,10 +37,22 @@ export class InvoicesService {
     return newInvoice;
   }
 
-  findAll(queryParams) {
-    const { page, take } = queryParams;
+  findAll(
+    statusParams: { filter_status: string },
+    paginationParams: paginationDto,
+  ) {
+    const { page, take } = paginationParams;
+    const { filter_status } = statusParams;
+    const query: any = {};
+    if (filter_status && filter_status.length > 0) {
+      query.status = {
+        $in: filter_status
+          .split(',')
+          .map((status) => status.charAt(0).toUpperCase() + status.slice(1)),
+      };
+    }
     return this.invoiceModel
-      .find()
+      .find(query)
       .skip((page - 1) * take)
       .limit(take);
   }

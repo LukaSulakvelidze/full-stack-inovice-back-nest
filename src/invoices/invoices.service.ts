@@ -62,10 +62,12 @@ export class InvoicesService {
   }
 
   updateInvoice(id: string, UpdateInvoiceDto: UpdateInvoiceDto) {
-    const invoiceItems = UpdateInvoiceDto.invoiceItems.map((item) => ({
-      ...item,
-      itemTotalPrice: item.itemPrice * item.itemQuantity,
-    }));
+    const invoiceItems =
+      UpdateInvoiceDto.invoiceItems &&
+      UpdateInvoiceDto.invoiceItems.map((item) => ({
+        ...item,
+        itemTotalPrice: item.itemPrice * item.itemQuantity,
+      }));
     return this.invoiceModel.findByIdAndUpdate(
       id,
       { ...UpdateInvoiceDto, invoiceItems },
